@@ -1,0 +1,69 @@
+plugins {
+    id 'com.android.application'
+    id 'kotlin-android'
+    id 'org.jetbrains.kotlin.android'
+    id 'kotlin-parcelize'
+    id 'kotlin-kapt'
+    id 'com.google.devtools.ksp' version '1.8.0-1.0.8'
+}
+
+apply from: "$project.projectDir/build-types.gradle"
+
+android {
+    compileSdk libs.versions.compileSdk.get().toInteger()
+
+    buildFeatures {
+        viewBinding = true
+    }
+
+    defaultConfig {
+        applicationId "com.app.open_weather_map"
+        minSdk libs.versions.minSdk.get().toInteger()
+        targetSdk libs.versions.targetSdk.get().toInteger()
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        signingConfig signingConfigs.debug
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
+    }
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_11
+    }
+    java {
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_11
+    }
+}
+
+dependencies {
+
+    implementation libs.bundles.coroutines
+    implementation libs.bundles.dagger
+    implementation libs.bundles.retrofit
+    implementation libs.bundles.okhttp
+    implementation libs.bundles.nav.graph
+    implementation libs.bundles.room
+
+    implementation libs.appcompat
+    implementation libs.constraintlayout
+    implementation libs.fragment.ktx
+    implementation libs.core.ktx
+    implementation libs.material
+    implementation libs.data.store
+    implementation libs.splash.screen
+    implementation libs.paging
+    implementation libs.swipe.refresh.layout
+
+    ksp libs.room.compiler
+    kapt libs.dagger.compiler
+    kapt libs.dagger.processor
+
+    testImplementation 'junit:junit:4.13.2'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+}

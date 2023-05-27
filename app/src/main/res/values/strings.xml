@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Open-Weather-Map</string>
+
+    <string name="something_go_wrong">Something go wrong</string>
+    <string name="server_timeout_error_text">Server does not respond. Please try later</string>
+    <string name="connection_refused_error_text">Connection refused</string>
+    <string name="error_text">Error</string>
+    <string name="internet_connection_error_text">Currently there is no internet connection. Please check the connection and try again.</string>
+</resources>
