@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/weather_navigation_graph"
+    app:startDestination="@id/weatherFragment">
+
+    <fragment
+        android:id="@+id/weatherFragment"
+        android:name="com.app.open_weather_map.presentation.city.weather.WeatherFragment"
+        android:label="WeatherFragment"
+        tools:layout="@layout/fragment_weather">
+        <action
+            android:id="@+id/action_weatherFragment_to_searchCityFragment"
+            app:destination="@id/searchCityFragment" />
+        <action
+            android:id="@+id/action_weatherFragment_to_favoriteCitiesListFragment"
+            app:destination="@id/favoriteCitiesListFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/searchCityFragment"
+        android:name="com.app.open_weather_map.presentation.city.search.SearchCityFragment"
+        android:label="SearchCityFragment"
+        tools:layout="@layout/fragment_search_city" />
+    <fragment
+        android:id="@+id/favoriteCitiesListFragment"
+        android:name="com.app.open_weather_map.presentation.city.favorite.FavoriteCitiesListFragment"
+        android:label="FavoriteCitiesListFragment"
+        tools:layout="@layout/fragment_favorite_cities_list" />
+</navigation>

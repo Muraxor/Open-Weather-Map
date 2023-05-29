@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Open-Weather-Map</string>
+
+    <string name="something_go_wrong">Что-то пошло не так.</string>
+    <string name="server_timeout_error_text">Сервер недоступен. Попробуйте позже.</string>
+    <string name="connection_refused_error_text">В соединении отказано</string>
+    <string name="error_text">Error</string>
+    <string name="internet_connection_error_text">Интернет-соединине отсутствует. Пожалуйста, проверьте подключение и попробуйте снова.</string>
+
+    <!-- Weather Fragment -->
+    <string name="search_button_text">Поиск</string>
+    <string name="favorite_cities_button_text">Избранные города</string>
+    <string name="city_name_title_text">Имя города</string>
+    <string name="weather_details_main_title_text">Главное</string>
+    <string name="weather_details_description_title_text">Описание</string>
+
+    <!-- Search City Fragment -->
+    <string name="search_city_button_text">Искать</string>
+    <string name="city_input_field_hint_text">Введите город</string>
+
+    <!-- Favorite Cities Fragment -->
+    <string name="favorite_cities_empty_message_text">Нет любимых городов</string>
+    <string name="item_detail_view_holder_pattern">%1$s: %2$s</string>
+</resources>

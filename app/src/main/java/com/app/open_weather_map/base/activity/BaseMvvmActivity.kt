@@ -14,7 +14,7 @@ abstract class BaseMvvmActivity<VB, VM> :
     lateinit var viewModelFactory: ViewModelProvider.Factory
 
     /**
-     * Returns the View Model related to the actual fragment
+     * Returns the View Model related to the actual activity
      */
     protected abstract val viewModel: VM
 

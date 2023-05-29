@@ -5,10 +5,12 @@ android {
             // your project's release build type.
             minifyEnabled true
             applicationIdSuffix ".release"
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            buildConfigField "String", "BASE_URL", "\"https://api.openweathermap.org/data/2.5/\""
+            buildConfigField "String", "WEATHER_API_KEY", "\"4dc82d2a1db101352f9c78dd9702ecff\""
         }
 
         debug {
+            initWith release
             minifyEnabled false
             debuggable = true
             applicationIdSuffix ".debug"

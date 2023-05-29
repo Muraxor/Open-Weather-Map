@@ -1,7 +1,9 @@
 package com.app.open_weather_map.di.modules
 
+import com.app.open_weather_map.BuildConfig
 import com.app.open_weather_map.data.network.interceptors.HttpErrorsInterceptor
 import com.app.open_weather_map.data.network.interceptors.connection.InternetConnectionInterceptor
+import com.app.open_weather_map.data.network.interceptors.weatherapi.WeatherApiKeyInterceptor
 import com.app.open_weather_map.utils.client.NetworkMessageResolver
 import com.app.open_weather_map.utils.observers.httperrors.HttpErrorManager
 import com.app.open_weather_map.utils.observers.network.ConnectivityObserver
@@ -26,5 +28,10 @@ class InterceptorsModule {
         httpErrorManager,
         networkMessageResolver,
         connectivityObserver
+    )
+
+    @Provides
+    fun provideWeatherApiKeyInterceptor(): WeatherApiKeyInterceptor = WeatherApiKeyInterceptor(
+        BuildConfig.WEATHER_API_KEY
     )
 }

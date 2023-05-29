@@ -58,6 +58,7 @@ dependencies {
     implementation libs.splash.screen
     implementation libs.paging
     implementation libs.swipe.refresh.layout
+    implementation libs.play.services.location
 
     ksp libs.room.compiler
     kapt libs.dagger.compiler

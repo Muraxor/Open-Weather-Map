@@ -1,6 +1,9 @@
 package com.app.open_weather_map.presentation.main
 
+import android.Manifest
 import android.os.Bundle
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.app.open_weather_map.base.activity.BaseMvvmActivity
 import com.app.open_weather_map.data.network.exceptions.*
@@ -10,6 +13,8 @@ import com.app.open_weather_map.presentation.servererror.ErrorDialogFragment
 import com.app.open_weather_map.di.AppInjector
 
 class MainActivity : BaseMvvmActivity<ActivityMainBinding, MainViewModel>() {
+
+    private lateinit var getUserLocation: ActivityResultLauncher<Array<String>>
 
     override val viewModel by injectedViewModel<MainViewModel>()
 
@@ -22,6 +27,8 @@ class MainActivity : BaseMvvmActivity<ActivityMainBinding, MainViewModel>() {
         super.onCreate(savedInstanceState)
         observeHttpErrors()
         observeProgressBarState()
+        registerForActivityResults()
+        checkLocationPermissions()
     }
 
     // FIXME: catch parent like DisplayException
@@ -29,7 +36,6 @@ class MainActivity : BaseMvvmActivity<ActivityMainBinding, MainViewModel>() {
         viewModel.httpExceptionsLiveData.observe(this) {
             when (it) {
                 is ServerTimeoutException,
-                is AbsentNetworkConnectionException,
                 is UnauthorizedException,
                 is ConnectionRefusedException -> ErrorDialogFragment.newInstanceWithArgs(
                     message = it.message
@@ -54,5 +60,27 @@ class MainActivity : BaseMvvmActivity<ActivityMainBinding, MainViewModel>() {
                 }
             }
         }
+    }
+
+    private fun registerForActivityResults() {
+        getUserLocation =
+            registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) {
+                viewModel.getLocation()
+            }
+    }
+
+    private fun checkLocationPermissions() {
+        requirePermissions(
+            permissions = arrayOf(
+                Manifest.permission.ACCESS_FINE_LOCATION,
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            ),
+            performIfAllIsGranted = {
+                viewModel.getLocation()
+            },
+            performIfSomeDenied = { denied ->
+                getUserLocation.launch(denied)
+            }
+        )
     }
 }

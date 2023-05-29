@@ -26,6 +26,8 @@ room = "2.5.1"
 paging = "3.1.1"
 swipe_refresh_layout = "1.1.0"
 
+play_services_location = "21.0.1"
+
 [libraries]
 # Define the libraries
 
@@ -62,6 +64,8 @@ room-paging = { module = "androidx.room:room-paging", version.ref = "room" }
 
 paging = { module = "androidx.paging:paging-runtime", version.ref = "paging" }
 swipe-refresh-layout = { module = "androidx.swiperefreshlayout:swiperefreshlayout", version.ref = "swipe_refresh_layout" }
+
+play-services-location = { module = "com.google.android.gms:play-services-location", version.ref = "play_services_location" }
 
 [bundles]
 # Define bundles/groups of libraries

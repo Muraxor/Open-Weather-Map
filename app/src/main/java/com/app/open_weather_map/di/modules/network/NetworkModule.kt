@@ -3,10 +3,12 @@ package com.app.open_weather_map.di.modules.network
 import com.app.open_weather_map.BuildConfig
 import com.app.open_weather_map.data.network.interceptors.HttpErrorsInterceptor
 import com.app.open_weather_map.data.network.interceptors.connection.InternetConnectionInterceptor
+import com.app.open_weather_map.data.network.interceptors.weatherapi.WeatherApiKeyInterceptor
 import com.app.open_weather_map.di.modules.InterceptorsModule
 import com.app.open_weather_map.di.modules.api.ApiModule
 import com.app.open_weather_map.extnesions.addDebugInterceptor
 import com.google.gson.Gson
+import com.google.gson.GsonBuilder
 import com.localebro.okhttpprofiler.OkHttpProfilerInterceptor
 import dagger.Module
 import dagger.Provides
@@ -27,14 +29,13 @@ private const val TIMEOUT = 30L
 )
 class NetworkModule {
 
-    // TODO: set url
     @Singleton
     @Provides
     fun provideRetrofit(
         gson: Gson,
         okHttpClient: OkHttpClient
     ): Retrofit = Retrofit.Builder()
-        .baseUrl("url")
+        .baseUrl(BuildConfig.BASE_URL)
         .addConverterFactory(GsonConverterFactory.create(gson))
         .client(okHttpClient)
         .build()
@@ -43,11 +44,13 @@ class NetworkModule {
     @Provides
     fun provideOkHttpClient(
         internetConnectionInterceptor: InternetConnectionInterceptor,
+        weatherApiKeyInterceptor: WeatherApiKeyInterceptor,
         httpErrorsInterceptor: HttpErrorsInterceptor,
     ): OkHttpClient = with(OkHttpClient.Builder()) {
         connectTimeout(TIMEOUT, TimeUnit.SECONDS)
         readTimeout(TIMEOUT, TimeUnit.SECONDS)
         addInterceptor(internetConnectionInterceptor)
+        addInterceptor(weatherApiKeyInterceptor)
         addInterceptor(httpErrorsInterceptor)
         addDebugInterceptor(OkHttpProfilerInterceptor())
         addInterceptor(HttpLoggingInterceptor().apply {
@@ -59,4 +62,10 @@ class NetworkModule {
         })
         build()
     }
+
+    @Provides
+    fun provideGson(): Gson = GsonBuilder()
+        .setPrettyPrinting()
+        .setLenient()
+        .create()
 }

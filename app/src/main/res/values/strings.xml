@@ -6,4 +6,20 @@
     <string name="connection_refused_error_text">Connection refused</string>
     <string name="error_text">Error</string>
     <string name="internet_connection_error_text">Currently there is no internet connection. Please check the connection and try again.</string>
+
+    <!-- Weather Fragment -->
+    <string name="search_button_text">Search</string>
+    <string name="favorite_cities_button_text">Favorites</string>
+    <string name="city_name_title_text">City name</string>
+    <string name="weather_details_main_title_text">Main</string>
+    <string name="weather_details_description_title_text">Description</string>
+
+    <!-- Search City Fragment -->
+    <string name="search_city_button_text">Go search</string>
+    <string name="city_input_field_hint_text">Input city name</string>
+
+    <!-- Favorite Cities Fragment -->
+    <string name="favorite_cities_empty_message_text">Go search</string>
+
+    <string name="item_detail_view_holder_pattern">%1$s: %2$s</string>
 </resources>

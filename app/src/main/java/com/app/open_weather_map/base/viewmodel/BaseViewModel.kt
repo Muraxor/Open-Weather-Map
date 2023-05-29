@@ -42,6 +42,15 @@ abstract class BaseViewModel : ViewModel() {
             progressBarInteractor.send(false)
         }
 
+    internal suspend fun <T> wrapWithProgressBar(block: suspend () -> T) {
+        try {
+            progressBarInteractor.send(true)
+            block.invoke()
+        } finally {
+            progressBarInteractor.send(false)
+        }
+    }
+
     protected val viewModelScopeWithHandler
         get() = viewModelScope + handler
 }
