@@ -18,11 +18,10 @@ import javax.inject.Inject
 
 class MainViewModel @Inject constructor(
     private val httpErrorManager: HttpErrorManager,
-    // FIXME: double inject
-    private val progressInteractor: ProgressBarInteractor,
     private val locationObserver: LocationObserver,
-    private val selectCityMediator: SelectCityMediator
-) : BaseViewModel() {
+    private val selectCityMediator: SelectCityMediator,
+    private val progressInteractor: ProgressBarInteractor
+) : BaseViewModel(progressInteractor) {
 
     private val _httpExceptionsLiveData = MutableLiveData<NetworkException>()
     val httpExceptionsLiveData: LiveData<NetworkException> = _httpExceptionsLiveData
@@ -37,17 +36,25 @@ class MainViewModel @Inject constructor(
 
     internal fun getLocation() {
         viewModelScopeWithHandler.launch {
-            if (locationObserver.isLocationEnabled()) {
-                wrapWithProgressBar {
-                    val location = try {
-                        withTimeout(5000L) {
+            wrapWithProgressBar {
+                val lastLocation = locationObserver.lastKnownLocation()
+                val location = if (locationObserver.isLocationEnabled()) {
+                    try {
+                        withTimeout(LOCATION_LISTENING_TIMEOUT) {
                             locationObserver.locationFlow().first()
                         }
                     } catch (e: TimeoutCancellationException) {
-                        locationObserver.lastKnownLocation()
+                        lastLocation
                     }
 
+                } else {
+                    lastLocation
+                }
+
+                if (location != null) {
                     selectCityMediator.loadPrimaryCity(location)
+                } else {
+                    // TODO: show error
                 }
             }
         }
@@ -65,5 +72,10 @@ class MainViewModel @Inject constructor(
                 _progressBarStateLiveData.postValue(isShowing)
             }
         }
+    }
+
+    companion object {
+
+        const val LOCATION_LISTENING_TIMEOUT = 5000L
     }
 }

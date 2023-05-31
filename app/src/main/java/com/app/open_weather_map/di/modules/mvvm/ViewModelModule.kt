@@ -5,7 +5,6 @@ import androidx.lifecycle.ViewModelProvider
 import com.app.open_weather_map.presentation.city.favorite.FavoriteCitiesListViewModel
 import com.app.open_weather_map.presentation.main.MainViewModel
 import com.app.open_weather_map.presentation.city.search.SearchCityViewModel
-import com.app.open_weather_map.presentation.city.weather.CitySharedViewModel
 import com.app.open_weather_map.presentation.city.weather.WeatherViewModel
 import dagger.Binds
 import dagger.Module
@@ -28,7 +27,4 @@ interface ViewModelModule {
 
     @[Binds IntoMap ViewModelKey(SearchCityViewModel::class)]
     fun bindSearchCityViewModel(viewModel: SearchCityViewModel): ViewModel
-
-    @[Binds IntoMap ViewModelKey(CitySharedViewModel::class)]
-    fun bindCitySharedViewModel(viewModel: CitySharedViewModel): ViewModel
 }

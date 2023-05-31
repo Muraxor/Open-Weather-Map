@@ -7,7 +7,7 @@ import com.app.open_weather_map.data.database.entities.WeatherEntity
 import com.app.open_weather_map.data.database.entities.WeatherTableName
 
 @Dao
-interface WeatherDao: BaseDao<WeatherEntity> {
+interface WeatherDao : BaseDao<WeatherEntity> {
 
     @Query("SELECT * from $WeatherTableName")
     suspend fun getAll(): List<WeatherEntity>

@@ -8,9 +8,8 @@ class CityAndWeatherRoom(
     @Embedded
     val city: CityEntity,
     @Relation(
-        parentColumn = "weatherId",
-        entityColumn = "id",
-        entity = WeatherEntity::class
+        parentColumn = "id",
+        entityColumn = "cityId"
     )
     val weather: WeatherEntity
 )

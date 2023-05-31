@@ -20,6 +20,10 @@ interface CityDao : BaseDao<CityEntity> {
     @Query("SELECT * FROM $CityTableName WHERE name = :cityName")
     fun isFavoriteLiveData(cityName: String): LiveData<List<CityEntity>>
 
+    @Transaction
+    @Query("SELECT * FROM $CityTableName WHERE name LIKE :searchQuery")
+    fun searchCitiesByName(searchQuery: String): Flow<List<CityEntity>>
+
     @Query("UPDATE $CityTableName SET isFavorite = :flag WHERE name = :cityName")
     suspend fun markFavorite(cityName: String, flag: Boolean)
 
@@ -31,7 +35,7 @@ interface CityDao : BaseDao<CityEntity> {
 
     @Transaction
     @Query("SELECT * from $CityTableName WHERE name = :cityName")
-    fun getCityAndWeatherFlow(cityName: String): Flow<CityAndWeatherRoom>
+    fun getCityAndWeatherFlow(cityName: String): Flow<CityAndWeatherRoom?>
 
     @Query("SELECT * from $CityTableName WHERE name = :cityName")
     suspend fun getCityAndWeather(cityName: String): CityAndWeatherRoom?

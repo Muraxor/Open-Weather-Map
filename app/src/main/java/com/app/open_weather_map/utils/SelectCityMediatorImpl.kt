@@ -7,14 +7,14 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import javax.inject.Inject
 
-// FIXME: not nice
 class SelectCityMediatorImpl @Inject constructor(
     private val cityWeatherRepository: CityWeatherRepository
 ) : SelectCityMediator {
 
     private val _city = MutableSharedFlow<CityName>(
         onBufferOverflow = BufferOverflow.DROP_OLDEST,
-        extraBufferCapacity = 1
+        extraBufferCapacity = 1,
+        replay = 1
     )
     override val city = _city.asSharedFlow()
 

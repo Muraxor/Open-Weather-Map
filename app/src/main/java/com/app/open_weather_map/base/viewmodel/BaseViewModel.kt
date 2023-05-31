@@ -8,14 +8,13 @@ import androidx.lifecycle.viewModelScope
 import com.app.open_weather_map.presentation.progressloader.interactor.ProgressBarInteractor
 import com.app.open_weather_map.utils.network.ResultWrapper
 import kotlinx.coroutines.*
-import javax.inject.Inject
 
-abstract class BaseViewModel : ViewModel() {
-
-    @Inject lateinit var resultWrapper: ResultWrapper
-    @Inject lateinit var progressBarInteractor: ProgressBarInteractor
+abstract class BaseViewModel(
+    private val progressBarInteractor: ProgressBarInteractor
+) : ViewModel() {
 
     private val _error = MutableLiveData<Throwable>()
+
     @Suppress("unused")
     val error: LiveData<Throwable> = _error
 
@@ -30,7 +29,7 @@ abstract class BaseViewModel : ViewModel() {
     ): Result<T> =
         try {
             progressBarInteractor.send(true)
-            resultWrapper.wrap(block)
+            ResultWrapper.wrap(block)
         } catch (e: Exception) {
             Log.d(tag, (e.stackTraceToString()))
             if (e is CancellationException) {
@@ -42,12 +41,21 @@ abstract class BaseViewModel : ViewModel() {
             progressBarInteractor.send(false)
         }
 
-    internal suspend fun <T> wrapWithProgressBar(block: suspend () -> T) {
+    internal suspend fun <T> wrapWithProgressBar(suspendBlock: suspend () -> T) {
         try {
             progressBarInteractor.send(true)
-            block.invoke()
+            suspendBlock.invoke()
         } finally {
             progressBarInteractor.send(false)
+        }
+    }
+
+    internal fun <T> wrapWithProgressBarNotSuspend(block: () -> T): T {
+        return try {
+            progressBarInteractor.trySend(true)
+            block.invoke()
+        } finally {
+            progressBarInteractor.trySend(false)
         }
     }
 

@@ -26,6 +26,9 @@ class CityRepositoryImpl @Inject constructor(
             list.find { it.name == cityName }?.isFavorite ?: false
         }
 
+    override fun searchCitiesByName(searchQuery: String) =
+        cityDao.searchCitiesByName("$searchQuery%")
+
     override fun getFavoritesLivaData(): LiveData<List<CityEntity>> =
         cityDao.getFavoritesFlow().asLiveData()
 

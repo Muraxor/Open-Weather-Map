@@ -13,6 +13,11 @@
     <string name="city_name_title_text">City name</string>
     <string name="weather_details_main_title_text">Main</string>
     <string name="weather_details_description_title_text">Description</string>
+    <string name="weather_details_temp_title_text">Temp</string>
+    <string name="weather_details_pressure_title_text">Pressure</string>
+    <string name="weather_details_speed_title_text">Wind Speed</string>
+    <string name="weather_details_deg_title_text">Wind Deg</string>
+    <string name="weather_details_gust_title_text">Wind Gust</string>
 
     <!-- Search City Fragment -->
     <string name="search_city_button_text">Go search</string>

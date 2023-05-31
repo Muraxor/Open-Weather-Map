@@ -28,7 +28,6 @@ fun Fragment.debugNavigate(
     }
 }
 
-@Suppress("unused")
 fun Fragment.popBackStack() {
     findNavController().popBackStack()
 }

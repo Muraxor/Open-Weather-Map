@@ -4,7 +4,6 @@ import android.content.Context
 import android.os.Bundle
 import android.view.View
 import android.view.View.OVER_SCROLL_NEVER
-import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.app.open_weather_map.R
 import com.app.open_weather_map.base.fragment.BaseMvvmFragment
@@ -20,7 +19,6 @@ private typealias ViewBinding = FragmentWeatherBinding
 class WeatherFragment : BaseMvvmFragment<ViewBinding, WeatherViewModel>() {
 
     private val weatherDetailsAdapter = WeatherDetailsAdapter()
-    private val sharedViewModel by activityViewModels<CitySharedViewModel> { viewModelFactory }
 
     override val viewModel by injectedViewModel<WeatherViewModel>()
 
@@ -72,7 +70,7 @@ class WeatherFragment : BaseMvvmFragment<ViewBinding, WeatherViewModel>() {
         overScrollMode = OVER_SCROLL_NEVER
         adapter = weatherDetailsAdapter
 
-        sharedViewModel.weatherDetails.observe(viewLifecycleOwner) {
+        viewModel.weatherDetails.observe(viewLifecycleOwner) {
             weatherDetailsAdapter.submitList(it)
         }
     }

@@ -7,7 +7,7 @@ interface LocationObserver {
 
     fun locationFlow(): Flow<Location>
 
-    fun lastKnownLocation(): Location
+    fun lastKnownLocation(): Location?
 
     fun isLocationEnabled(): Boolean
 }

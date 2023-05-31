@@ -1,9 +1,6 @@
 package com.app.open_weather_map.utils.network
 
-import okio.IOException
-import javax.inject.Inject
-
-class ResultWrapper @Inject constructor() {
+object ResultWrapper {
 
     suspend fun <T> wrap(
         block: suspend () -> T
@@ -11,7 +8,7 @@ class ResultWrapper @Inject constructor() {
         return try {
             val response = block()
             Result.success(response)
-        } catch (e: IOException) {
+        } catch (e: Exception) {
             Result.failure(e)
         }
     }

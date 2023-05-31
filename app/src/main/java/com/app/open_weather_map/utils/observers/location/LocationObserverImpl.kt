@@ -2,10 +2,10 @@ package com.app.open_weather_map.utils.observers.location
 
 import android.Manifest.permission
 import android.location.Location
-import android.location.LocationListener
 import android.location.LocationManager
 import android.os.Build
 import androidx.annotation.RequiresPermission
+import androidx.core.location.LocationListenerCompat
 import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.*
@@ -17,7 +17,7 @@ class LocationObserverImpl @Inject constructor(
 
     @RequiresPermission(anyOf = [permission.ACCESS_COARSE_LOCATION, permission.ACCESS_FINE_LOCATION])
     override fun locationFlow(): Flow<Location> = callbackFlow {
-        LocationListener { location ->
+        LocationListenerCompat { location ->
             launch { send(location) }
         }.also { listener ->
             locationManager.requestLocationUpdates(
@@ -27,7 +27,6 @@ class LocationObserverImpl @Inject constructor(
                 listener
             )
             awaitClose {
-
                 locationManager.removeUpdates(listener)
             }
         }
@@ -36,9 +35,9 @@ class LocationObserverImpl @Inject constructor(
         .distinctUntilChanged()
 
     @RequiresPermission(anyOf = [permission.ACCESS_COARSE_LOCATION, permission.ACCESS_FINE_LOCATION])
-    override fun lastKnownLocation(): Location {
+    override fun lastKnownLocation(): Location? {
         return locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER)
-            ?: throw IllegalStateException()
+            ?: locationManager.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER)
     }
 
     override fun isLocationEnabled(): Boolean {

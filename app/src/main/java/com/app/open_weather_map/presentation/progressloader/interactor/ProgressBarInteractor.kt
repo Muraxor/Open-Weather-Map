@@ -9,4 +9,6 @@ interface ProgressBarInteractor {
     val progressStateFlow: SharedFlow<IsShowing>
 
     suspend fun send(state: IsShowing)
+
+    fun trySend(state: IsShowing)
 }

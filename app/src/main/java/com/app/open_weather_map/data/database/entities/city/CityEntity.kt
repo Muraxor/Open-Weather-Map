@@ -11,7 +11,6 @@ const val CityTableName = "Cities"
 )
 data class CityEntity(
     @PrimaryKey val id: Int,
-    val weatherId: Int,
     val name: String,
     @ColumnInfo(defaultValue = "0")
     val isFavorite: Boolean

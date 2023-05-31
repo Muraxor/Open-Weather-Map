@@ -17,4 +17,8 @@ class ProgressBarInteractorImpl @Inject constructor() : ProgressBarInteractor {
     override suspend fun send(state: IsShowing) {
         _progressStateFlow.emit(state)
     }
+
+    override fun trySend(state: IsShowing) {
+        _progressStateFlow.tryEmit(state)
+    }
 }

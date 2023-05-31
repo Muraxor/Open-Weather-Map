@@ -4,7 +4,6 @@ import android.content.Context
 import android.os.Bundle
 import android.view.View
 import androidx.core.view.isVisible
-import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.app.open_weather_map.base.fragment.BaseMvvmFragment
 import com.app.open_weather_map.databinding.FragmentFavoriteCitiesListBinding
@@ -13,7 +12,6 @@ import com.app.open_weather_map.extnesions.ViewBindingInflateProvider
 import com.app.open_weather_map.extnesions.popBackStack
 import com.app.open_weather_map.presentation.city.favorite.adapter.FavoriteCitiesAdapter
 import com.app.open_weather_map.presentation.city.favorite.adapter.model.FavoriteCityUiModel
-import com.app.open_weather_map.presentation.city.weather.CitySharedViewModel
 
 private typealias ViewBinding = FragmentFavoriteCitiesListBinding
 
@@ -21,7 +19,6 @@ class FavoriteCitiesListFragment : BaseMvvmFragment<ViewBinding, FavoriteCitiesL
     FavoriteCitiesAdapter.ItemClickListener {
 
     private val favoriteCitiesAdapter = FavoriteCitiesAdapter(this)
-    private val sharedViewModel by activityViewModels<CitySharedViewModel> { viewModelFactory }
 
     override val viewModel by injectedViewModel<FavoriteCitiesListViewModel>()
 
@@ -41,6 +38,10 @@ class FavoriteCitiesListFragment : BaseMvvmFragment<ViewBinding, FavoriteCitiesL
         viewModel.noFavorites.observe(viewLifecycleOwner) {
             requireBinding().emptyMessageTextView.isVisible = it
         }
+
+        viewModel.cityClickedLiveData.observe(viewLifecycleOwner) {
+            popBackStack()
+        }
     }
 
     private fun setupFavoritesList() = with(requireBinding().favoritesListRecyclerView) {
@@ -53,8 +54,7 @@ class FavoriteCitiesListFragment : BaseMvvmFragment<ViewBinding, FavoriteCitiesL
     }
 
     override fun onItemClicked(model: FavoriteCityUiModel) {
-        sharedViewModel.onCityChosen(model.name)
-        popBackStack()
+        viewModel.onCityClicked(model.name)
     }
 
     override fun onDeleteClicked(model: FavoriteCityUiModel) {

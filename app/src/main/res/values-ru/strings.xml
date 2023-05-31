@@ -15,6 +15,11 @@
     <string name="city_name_title_text">Имя города</string>
     <string name="weather_details_main_title_text">Главное</string>
     <string name="weather_details_description_title_text">Описание</string>
+    <string name="weather_details_temp_title_text">Температура</string>
+    <string name="weather_details_pressure_title_text">А.д.</string>
+    <string name="weather_details_speed_title_text">Скорость ветра</string>
+    <string name="weather_details_deg_title_text">Градус ветра</string>
+    <string name="weather_details_gust_title_text">Сила ветра</string>
 
     <!-- Search City Fragment -->
     <string name="search_city_button_text">Искать</string>
