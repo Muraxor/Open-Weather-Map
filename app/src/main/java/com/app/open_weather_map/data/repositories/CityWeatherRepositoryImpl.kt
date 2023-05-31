@@ -3,7 +3,9 @@ package com.app.open_weather_map.data.repositories
 import android.location.Location
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.asLiveData
+import androidx.room.withTransaction
 import com.app.open_weather_map.data.api.WeatherApi
+import com.app.open_weather_map.data.database.AppDatabase
 import com.app.open_weather_map.data.database.dao.city.CityDao
 import com.app.open_weather_map.data.database.dao.weather.WeatherDao
 import com.app.open_weather_map.data.database.entities.CityAndWeatherRoom
@@ -16,6 +18,7 @@ import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class CityWeatherRepositoryImpl @Inject constructor(
+    private val appDatabase: AppDatabase,
     private val cityDao: CityDao,
     private val weatherDao: WeatherDao,
     private val api: WeatherApi,
@@ -24,11 +27,6 @@ class CityWeatherRepositoryImpl @Inject constructor(
 
     override fun getCityAndWeatherLiveData(cityName: String): LiveData<CityAndWeatherRoom?> =
         cityDao.getCityAndWeatherFlow(cityName).asLiveData()
-
-    override suspend fun getCityAndWeather(cityName: String): CityAndWeatherRoom? =
-        withContext(ioDispatcher) {
-            cityDao.getCityAndWeather(cityName)
-        }
 
     override suspend fun getNetworkWeather(location: Location): CityWeatherResponse =
         withContext(ioDispatcher) {
@@ -46,7 +44,9 @@ class CityWeatherRepositoryImpl @Inject constructor(
 
     private suspend fun sync(responseBody: CityWeatherResponse) =
         with(responseBody.toEntityModel()) {
-            cityDao.insert(city)
-            weatherDao.upsert(weather)
+            appDatabase.withTransaction {
+                cityDao.insert(city)
+                weatherDao.upsert(weather)
+            }
         }
 }

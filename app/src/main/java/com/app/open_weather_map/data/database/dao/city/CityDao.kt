@@ -37,9 +37,6 @@ interface CityDao : BaseDao<CityEntity> {
     @Query("SELECT * from $CityTableName WHERE name = :cityName")
     fun getCityAndWeatherFlow(cityName: String): Flow<CityAndWeatherRoom?>
 
-    @Query("SELECT * from $CityTableName WHERE name = :cityName")
-    suspend fun getCityAndWeather(cityName: String): CityAndWeatherRoom?
-
     @Query("DELETE FROM $CityTableName WHERE id = :cityId")
     fun delete(cityId: Int)
 }

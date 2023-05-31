@@ -9,8 +9,6 @@ interface CityWeatherRepository {
 
     fun getCityAndWeatherLiveData(cityName: String): LiveData<CityAndWeatherRoom?>
 
-    suspend fun getCityAndWeather(cityName: String): CityAndWeatherRoom?
-
     suspend fun getNetworkWeather(location: Location): CityWeatherResponse
 
     suspend fun getNetworkWeather(cityName: String): CityWeatherResponse
