@@ -29,6 +29,15 @@ class MainActivity : BaseMvvmActivity<ActivityMainBinding, MainViewModel>() {
         observeProgressBarState()
         registerForActivityResults()
         checkLocationPermissions()
+
+        viewModel.error.observe(this) {
+            ErrorDialogFragment.newInstanceWithArgs(
+                message = it.message
+            ).show(
+                supportFragmentManager,
+                ErrorDialogFragment::class.java.simpleName
+            )
+        }
     }
 
     // FIXME: catch parent like DisplayException
@@ -64,8 +73,18 @@ class MainActivity : BaseMvvmActivity<ActivityMainBinding, MainViewModel>() {
 
     private fun registerForActivityResults() {
         getUserLocation =
-            registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) {
-                viewModel.getLocation()
+            registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
+                when {
+                    permissions.getOrDefault(Manifest.permission.ACCESS_FINE_LOCATION, false) -> {
+                        viewModel.getGpsLocation()
+                    }
+                    permissions.getOrDefault(Manifest.permission.ACCESS_COARSE_LOCATION, false) -> {
+                        viewModel.getLastLocation()
+                    }
+                    else -> {
+                        //todo shoe error
+                    }
+                }
             }
     }
 
@@ -76,7 +95,7 @@ class MainActivity : BaseMvvmActivity<ActivityMainBinding, MainViewModel>() {
                 Manifest.permission.ACCESS_COARSE_LOCATION
             ),
             performIfAllIsGranted = {
-                viewModel.getLocation()
+                viewModel.getGpsLocation()
             },
             performIfSomeDenied = { denied ->
                 getUserLocation.launch(denied)

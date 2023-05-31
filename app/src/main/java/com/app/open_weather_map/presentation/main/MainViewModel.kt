@@ -34,28 +34,33 @@ class MainViewModel @Inject constructor(
         observeProgressBarState()
     }
 
-    internal fun getLocation() {
+    internal fun getGpsLocation() {
         viewModelScopeWithHandler.launch {
             wrapWithProgressBar {
-                val lastLocation = locationObserver.lastKnownLocation()
-                val location = if (locationObserver.isLocationEnabled()) {
+                if (locationObserver.isLocationEnabled()) {
                     try {
                         withTimeout(LOCATION_LISTENING_TIMEOUT) {
                             locationObserver.locationFlow().first()
+                        }.also {
+                            selectCityMediator.loadPrimaryCity(it)
                         }
                     } catch (e: TimeoutCancellationException) {
-                        lastLocation
+                        getLastLocation()
                     }
-
                 } else {
-                    lastLocation
+                    getLastLocation()
                 }
+            }
+        }
+    }
 
-                if (location != null) {
-                    selectCityMediator.loadPrimaryCity(location)
-                } else {
-                    // TODO: show error
-                }
+    internal fun getLastLocation() {
+        viewModelScopeWithHandler.launch {
+            val location = locationObserver.lastKnownLocation()
+            if (location != null) {
+                selectCityMediator.loadPrimaryCity(location)
+            } else {
+                throw IllegalStateException("Location is unavailable. Please turn on gps and rerun application")
             }
         }
     }
